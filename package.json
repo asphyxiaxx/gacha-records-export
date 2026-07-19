@@ -1,0 +1,94 @@
+{
+  "name": "gacha-records-export",
+  "version": "0.0.1",
+  "main": "./out/main/main.js",
+  "author": "asphxiaxx <https://github.com/asphyxiaxx/gacha-records-export>",
+  "homepage": "https://github.com/asphyxiaxx/gacha-records-export",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron ./src/main/main.js",
+    "dev": "electron-vite dev --watch",
+    "build": "electron-vite build && electron-builder",
+    "build:win32": "electron-vite build && electron-builder --win --ia32",
+    "build:win64": "electron-vite build && electron-builder --win --x64",
+    "build:linux": "electron-vite build && electron-builder --linux",
+    "build:mac": "electron-vite build && electron-builder --mac",
+    "build:dir": "electron-vite build && electron-builder --dir"
+  },
+  "build": {
+    "appId": "org.asphyxiaxx.gacha-records-export",
+    "productName": "Gacha Records Export",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "out/**/*"
+    ],
+    "extraFiles": [],
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "asar": true,
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "assets/icons/icon.ico"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "assets/icons/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "assets/icons"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "asphyxiaxx",
+      "repo": "gacha-records-export"
+    }
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.2.0",
+    "@element-plus/icons-vue": "^0.2.6",
+    "@tailwindcss/vite": "^4.3.2",
+    "@types/node": "^22.0.0",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "adm-zip": "^0.5.9",
+    "ajv": "^8.20.0",
+    "autoprefixer": "^10.4.2",
+    "echarts": "^6.1.0",
+    "electron": "^43.0.0",
+    "electron-builder": "^26.15.3",
+    "electron-fetch": "^1.7.4",
+    "electron-log": "^5.4.4",
+    "electron-unhandled": "^3.0.2",
+    "electron-updater": "^6.8.9",
+    "electron-vite": "^5.0.0",
+    "electron-window-state": "^5.0.3",
+    "element-plus": "^1.3.0-beta.7",
+    "exceljs": "^4.4.0",
+    "extract-zip": "^2.0.1",
+    "fs-extra": "^10.0.0",
+    "glob": "^13.0.6",
+    "lodash-es": "^4.17.21",
+    "moment": "^2.29.1",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^4.3.2",
+    "tar": "^7.5.20",
+    "vite": "^7.1.0",
+    "vue": "^3.2.29",
+    "winreg": "^1.2.4"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.11.1"
+  }
+}

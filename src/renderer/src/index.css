@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/* global custom styles */
+:root {
+  --el-font-size-base: 12px !important;
+}
+
+/* Global standard for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gray-300) transparent;
+}
+
+/* Global standard for Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 6px; /* 6px is usually a better click-target size than 4px */
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-gray-300);
+  border-radius: 9999px; /* Ensures a perfect pill shape */
+}
+
+/* Optional: Add a slight hover effect so users know it's interactable */
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-gray-400);
+}
