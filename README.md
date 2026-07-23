@@ -4,7 +4,7 @@ English | [中文](https://github.com/asphyxiaxx/gacha-records-export/blob/main/
 
 ## Credits & Acknowledgements
 
-This project is a fork of [Original Project Name](https://github.com/biuuu/genshin-wish-export) originally created by [@original-owner](https://github.com/biuuu). 
+This project is a fork of [genshin-wish-export](https://github.com/biuuu/genshin-wish-export) originally created by [@biuu](https://github.com/biuuu). 
 
 Huge thanks to the original author and contributors for building the foundation of this project.
 
@@ -27,7 +27,8 @@ If you feel that the existing translation is inappropriate, you can send a pull 
 
 ## Usage (Genshin Impact)
 
-1. Unzip after downloading the tool - [Download](https://github.com/asphyxiaxx/gacha-records-export/releases/latest/download/Gacha-Records-Export.zip)
+1. Download the tool - [Github](https://github.com/asphyxiaxx/gacha-records-export/releases/latest)
+
 2. Open the wish history of the game
 
     ![wish history](/docs/wish-history.png)

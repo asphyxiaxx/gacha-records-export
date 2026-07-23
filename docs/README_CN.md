@@ -4,7 +4,7 @@
 
 ## 制作人员与致谢
 
-本项目是基于 [@original-owner](https://github.com/biuuu) 最初创建的 [Original Project Name](https://github.com/biuuu/genshin-wish-export) 的派生项目（fork）。
+本项目是基于 [@biuu](https://github.com/biuuu) 最初创建的 [genshin-wish-export](https://github.com/biuuu/genshin-wish-export) 的派生项目（fork）。
 
 衷心感谢原作者及各位贡献者为本项目奠定了基础！
 
@@ -25,7 +25,7 @@
 
 ## 使用说明（原神）
 
-1. 下载工具后解压 - 下载地址: [Github](https://github.com/asphyxiaxx/gacha-records-export/releases/latest/download/Gacha-Records-Export.zip)
+1. 下载工具 - 下载地址: [Github](https://github.com/asphyxiaxx/gacha-records-export/releases/latest)
 
 2. 打开游戏的祈愿历史记录
 
