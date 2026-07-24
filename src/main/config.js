@@ -16,17 +16,25 @@ const validateConfigJson = new Ajv2020({ strict: false }).compile({
       patternProperties: { ".*": { type: "object" } },
     },
   },
-  required: [],
+  required: ["lang", "currentGameId", "games"],
 });
 
 class ConfigManager {
-  lang = i18n.currentLocale;
-  currentGameId = "genshin";
+  #lang = i18n.currentLocale;
+  #currentGameId = "genshin";
+
+  get lang() {
+    return this.#lang;
+  }
+
+  get currentGameId() {
+    return this.#currentGameId;
+  }
 
   get data() {
     return {
-      lang: this.lang,
-      currentGameId: this.currentGameId,
+      lang: this.#lang,
+      currentGameId: this.#currentGameId,
       games: extractors.exportConfigs(),
     };
   }
@@ -34,8 +42,8 @@ class ConfigManager {
   update(payload) {
     if (payload && validateConfigJson(payload)) {
       const { games, ...config } = payload;
-      this.lang = config.lang;
-      this.currentGameId = config.currentGameId;
+      this.#lang = config.lang;
+      this.#currentGameId = config.currentGameId;
       extractors.importConfigs(games);
     }
   }
@@ -54,7 +62,7 @@ class ConfigManager {
 
   async save() {
     log.debug(`Saving configs to ${FILENAME}...`);
-    const data = this.data
+    const data = this.data;
     await saveJSON(FILENAME, data);
   }
 }

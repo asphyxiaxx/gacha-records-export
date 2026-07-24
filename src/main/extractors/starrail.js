@@ -9,22 +9,24 @@ import { formatTimestamp, parseText, sleep } from "../utils.js";
 import BaseExtractor from "./base.js";
 import { SentinelMessage } from "./message.js";
 
-const API_CN = "https://public-operation-hk4e.mihoyo.com";
-const API_SEA = "https://public-operation-hk4e-sg.hoyoverse.com";
+const API_CN = "https://public-operation-hkrpg.mihoyo.com";
+const API_SEA = "https://public-operation-hkrpg-sg.hoyoverse.com";
 
-const GACHA_TYPES = ["301", "302", "200", "100", "400", "500"];
+const GACHA_TYPES = ["11", "12", "1", "2", "21", "22"];
 
-const WEAPON_TYPE_NAMES = new Set([
-  "武器",
-  "Weapon",
-  "무기",
-  "Arma",
-  "Arme",
-  "Оружие",
-  "อาวุธ",
-  "Vũ Khí",
-  "Waffe",
-  "Senjata",
+const LIGHT_CONE_TYPE_NAMES = new Set([
+  "光锥",
+  "光錐",
+  "Lichtkegel",
+  "Light Cone",
+  "Conos de luz",
+  "cônes de lumière",
+  "光円錐",
+  "광추",
+  "Cones de Luz",
+  "Световые конусы",
+  "Nón Ánh Sáng",
+  "Cône de lumière",
 ]);
 const CHARACTER_TYPE_NAMES = new Set([
   "角色",
@@ -40,22 +42,6 @@ const CHARACTER_TYPE_NAMES = new Set([
   "Karakter",
   "Personagem",
 ]);
-
-const UIGF_DICT_LANGS = {
-  "zh-cn": "chs",
-  "zh-tw": "cht",
-  "de-de": "de",
-  "en-us": "en",
-  "es-es": "es",
-  "fr-fr": "fr",
-  "id-id": "id",
-  "ja-jp": "jp",
-  "ko-kr": "kr",
-  "pt-pt": "pt",
-  "ru-ru": "ru",
-  "th-th": "th",
-  "vi-vi": "vi",
-};
 
 const API_LANGS = {
   "en-us": "en",
@@ -75,11 +61,28 @@ const API_LANGS = {
   "it-it": "it",
 };
 
+const UIGF_DICT_LANGS = {
+  "zh-cn": "chs",
+  "zh-tw": "cht",
+  "de-de": "de",
+  "en-us": "en",
+  "es-es": "es",
+  "fr-fr": "fr",
+  "id-id": "id",
+  "ja-jp": "jp",
+  "ko-kr": "kr",
+  "pt-pt": "pt",
+  "ru-ru": "ru",
+  "th-th": "th",
+  "vi-vi": "vi",
+};
+
 function getApi(url) {
   const host = url.host;
   if (
     host.includes("webstatic-sea") ||
-    host.includes("hk4e-api-os") ||
+    host.includes("hkrpg-api-os") ||
+    host.includes("api-os-takumi") ||
     host.includes("hoyoverse.com")
   ) {
     return API_SEA;
@@ -88,38 +91,12 @@ function getApi(url) {
 }
 
 function parseItemType(value) {
-  if (WEAPON_TYPE_NAMES.has(value)) {
-    return "weapon";
+  if (LIGHT_CONE_TYPE_NAMES.has(value)) {
+    return "lightcone";
   } else if (CHARACTER_TYPE_NAMES.has(value)) {
     return "character";
   }
   return "unknown";
-}
-
-async function readCloudLog() {
-  const filepath = path.join(
-    app.getPath("home"),
-    "AppData",
-    "Local",
-    "miHoYo",
-    "GenshinImpactCloudGame",
-    "config",
-    "logs",
-    "MiHoYoSDK.log",
-  );
-
-  let data;
-  try {
-    data = await fs.readFile(filepath, "utf8");
-  } catch (e) {
-    log.warn(`Failed to read log file: ${e}`);
-    return null;
-  }
-
-  const m = data.match(
-    /https.+?auth_appid=webview_gacha.+?authkey=.+?game_biz=hk4e_\w+/g / g,
-  );
-  return m ? m[m.length - 1] : null;
 }
 
 async function readLocalSEALog() {
@@ -127,8 +104,8 @@ async function readLocalSEALog() {
     app.getPath("home"),
     "AppData",
     "LocalLow",
-    "miHoYo",
-    "Genshin Impact",
+    "Cognosphere",
+    "Star Rail",
     "output_log.txt",
   );
   return readLocalLog(filepath);
@@ -140,7 +117,7 @@ async function readLocalCNLog() {
     "AppData",
     "LocalLow",
     "miHoYo",
-    "原神",
+    "崩坏：星穹铁道",
     "output_log.txt",
   );
   return readLocalLog(filepath);
@@ -156,7 +133,7 @@ async function readLocalLog(filepath) {
     return null;
   }
 
-  m = data.match(/\w:\/.+(GenshinImpact_Data|YuanShen_Data)/);
+  m = data.match(/\w:\\.*?\\StarRail_Data\\/gi);
   if (!m) {
     log.warn(`Unable to find the game path from file '${filepath}'`);
     return null;
@@ -197,12 +174,12 @@ async function readLocalLog(filepath) {
   try {
     data = await fs.readFile(logfile, "utf8");
   } catch (e) {
-    log.warn(`Failed to read cache file at ${logfile}:`, e);
+    log.warn(`Failed to read cache file at '${logfile}':`, e);
     return null;
   }
 
   m = data.match(
-    /https.+?auth_appid=webview_gacha.+?authkey=.+?game_biz=hk4e_\w+/g,
+    /https[^?]+?\?[^?]+?&auth_appid=webview_gacha&.+?authkey=.+?&game_biz=hkrpg_/g,
   );
   if (!m) {
     log.warn(`Unable to find gacha url in '${logfile}'`);
@@ -212,14 +189,14 @@ async function readLocalLog(filepath) {
   return m[m.length - 1];
 }
 
-class GenshinExtractor extends BaseExtractor {
-  id = "genshin";
+class StarRailExtractor extends BaseExtractor {
+  id = "starrail";
 
   /** SQL */
   tableSchema = {
     uid: "TEXT",
     gachaType: "TEXT",
-    gachaTypeAlt: "TEXT",
+    gachaId: "TEXT",
     lang: "TEXT",
     id: "TEXT",
     name: "TEXT",
@@ -232,20 +209,17 @@ class GenshinExtractor extends BaseExtractor {
   };
 
   /** UIGF */
-  UIGFKey = "hk4e";
-  UIGFId = "genshin";
+  UIGFKey = "hkrpg";
   #UIGFItemsMap = new Map();
 
   /** Configurations */
   #logType = 0;
   #fetchFullHistory = false;
-  #hideNovice = true;
 
   importConfig(config) {
     super.importConfig(config);
     this.#logType = config.logType;
     this.#fetchFullHistory = config.fetchFullHistory;
-    this.#hideNovice = config.hideNovice;
   }
 
   exportConfig() {
@@ -253,7 +227,6 @@ class GenshinExtractor extends BaseExtractor {
       ...super.exportConfig(),
       logType: this.#logType,
       fetchFullHistory: this.#fetchFullHistory,
-      hideNovice: this.#hideNovice,
     };
   }
 
@@ -261,8 +234,8 @@ class GenshinExtractor extends BaseExtractor {
     const uid = this.currentUID;
     if (!uid) return null;
 
-    const gachaTypeNames = i18n.games.genshin.types;
-    const excel = i18n.games.genshin.excel;
+    const gachaTypeNames = i18n.games.starrail.types;
+    const excel = i18n.games.starrail.excel;
     const sheets = [];
     const columns = [
       {
@@ -289,7 +262,7 @@ class GenshinExtractor extends BaseExtractor {
         let lastRank5 = 0;
 
         items.forEach((item, index) => {
-          const remark = item.gachaTypeAlt === "400" ? excel.wish2 : "";
+          const remark = "";
           rows.push([
             item.timestamp / 86400000 + 25569,
             item.name,
@@ -321,18 +294,16 @@ class GenshinExtractor extends BaseExtractor {
 
     const orderKey = [
       "character5",
-      "weapon5",
+      "lightcone5",
       "character4",
-      "weapon4",
-      "weapon3",
+      "lightcone4",
+      "lightcone3",
     ];
     const orderStat = ["star5", "star4", "star3"];
     const summary = [];
     const fetchTimestamps = [];
 
     GACHA_TYPES.forEach((gachaType) => {
-      if (this.#hideNovice && gachaType == "100") return;
-
       const items = this._data({ uid, gachaType });
       if (!items || items.length === 0) return;
 
@@ -410,7 +381,7 @@ class GenshinExtractor extends BaseExtractor {
           .filter((key) => counts[key])
           .map((key) => {
             const count = counts[key];
-            if (key === "weapon3" && history.length > 0) {
+            if (key === "lightcone3" && history.length > 0) {
               count.selected = false;
             }
             return count;
@@ -441,23 +412,19 @@ class GenshinExtractor extends BaseExtractor {
   }
 
   async getUrl() {
-    const text = i18n.games.genshin.log;
+    const text = i18n.games.starrail.log;
     const logType = this.#logType;
-
     let strategies;
 
     if (logType === 0) {
       // Auto
-      strategies = [readLocalSEALog, readLocalCNLog, readCloudLog];
+      strategies = [readLocalSEALog, readLocalCNLog];
     } else if (logType === 1) {
       // CN
       strategies = [readLocalCNLog];
     } else if (logType === 2) {
       // Global
       strategies = [readLocalSEALog];
-    } else if (logType === 3) {
-      // Cloud
-      strategies = [readCloudLog];
     } else {
       throw new Error("");
     }
@@ -468,12 +435,13 @@ class GenshinExtractor extends BaseExtractor {
         return url;
       }
     }
+
     throw new Error(text.file.notFound);
   }
 
   async *fetchData(url = null) {
-    const text = i18n.games.genshin.log;
-    const gachaTypeNames = i18n.games.genshin.types;
+    const text = i18n.games.starrail.log;
+    const gachaTypeNames = i18n.games.starrail.types;
 
     const extractedUrl = new URL(url ?? (await this.getUrl()));
     const authkey = extractedUrl.searchParams.get("authkey");
@@ -483,8 +451,7 @@ class GenshinExtractor extends BaseExtractor {
     let uid = 0;
     const fetchFull = this.#fetchFullHistory;
     const fetchTimestamp = Date.now();
-    const api = getApi(extractedUrl);
-    const finalUrl = new URL(`gacha_info/api/getGachaLog`, api);
+    const finalUrl = new URL(getApi(extractedUrl));
     const searchParams = finalUrl.searchParams;
     const apiLang = API_LANGS[i18n.currentLocale] ?? API_LANGS["en-us"];
 
@@ -493,15 +460,25 @@ class GenshinExtractor extends BaseExtractor {
     searchParams.set("lang", apiLang);
 
     for (const gachaType of GACHA_TYPES) {
-      const typeName = gachaTypeNames[gachaType] ?? gachaType;
+      const gachaTypeName = gachaTypeNames[gachaType] ?? gachaType;
+      const pathname = ["21", "22"].includes(gachaType)
+        ? "common/gacha_record/api/getLdGachaLog"
+        : "common/gacha_record/api/getGachaLog";
+
+      searchParams.set("gacha_type", gachaType);
+      finalUrl.pathname = pathname;
+
       const items = [];
       let page = 1;
       let endId = null;
 
-      searchParams.set("gacha_type", gachaType);
-
       while (true) {
-        const list = yield* this.#fetchPage(typeName, finalUrl, page, endId);
+        const { region, timezone, list } = yield* this.#fetchPage(
+          gachaTypeName,
+          finalUrl,
+          page,
+          endId,
+        );
         if (!list || !list.length) break;
 
         if (!uid) {
@@ -516,10 +493,11 @@ class GenshinExtractor extends BaseExtractor {
             return {
               uid: uid,
               gachaType: gachaType,
-              gachaTypeAlt: item.gacha_type,
+              gachaId: item.gacha_id,
               lang: item.lang,
               id: item.id,
               name: item.name,
+              count: item.count,
               itemType: item.item_type,
               itemTypeNorm: parseItemType(item.item_type),
               rankType: item.rank_type,
@@ -568,8 +546,8 @@ class GenshinExtractor extends BaseExtractor {
 
           return {
             uid: uid,
-            gachaType: item.uigf_gacha_type,
-            gachaTypeAlt: item.gacha_type,
+            gachaType: item.gacha_type,
+            gachaId: item.gacha_id,
             lang: lang,
             id: item.id,
             name: itemName ?? "???",
@@ -614,8 +592,8 @@ class GenshinExtractor extends BaseExtractor {
         const { itemId, name } = await getItemIdName(item);
 
         list.push({
-          uigf_gacha_type: item.gachaType,
-          gacha_type: item.gachaTypeAlt,
+          gacha_id: item.gachaId,
+          gacha_type: item.gachaType,
           item_id: itemId,
           count: item.count,
           time: formatTimestamp(item.timestamp),
@@ -642,7 +620,7 @@ class GenshinExtractor extends BaseExtractor {
   }
 
   async *#fetchPage(name, url, page, endId) {
-    const text = i18n.games.genshin.log;
+    const text = i18n.games.starrail.log;
 
     if (page % 10 === 0) {
       yield new SentinelMessage(parseText(text.fetch.interval, { name, page }));
@@ -683,27 +661,34 @@ class GenshinExtractor extends BaseExtractor {
         throw new Error(message);
       }
 
-      /**
-       * dataList = [
-       *  {
-       *    uid: "123456789",
-       *    gacha_type: "200",
-       *    item_id: "",
-       *    count: "1",
-       *    time: "2000-01-01 00:00:00",
-       *    name: "弹弓",
-       *    lang: "zh-cn",
-       *    item_type: "武器",
-       *    rank_type: "3",
-       *    id: "1781669160000079390",
-       *    op_gacha_type: "200",
-       *  },
-       *];
-       */
-      const dataList = result?.data?.list;
+      const data = result?.data;
+      if (data) {
+        /**
+         * data.list = [
+         *  {
+         *    uid: "123456789",
+         *    gacha_id: "200",
+         *    gacha_type: "11",
+         *    item_id: "20010",
+         *    count: "1",
+         *    time: "2000-01-01 00:00:00",
+         *    name: "Defense",
+         *    lang: "en-us",
+         *    item_type: "Light Cone",
+         *    rank_type: "3",
+         *    id: "1781669160000079390",
+         *  },
+         *];
+         */
+        const dataList = data.list;
 
-      if (Array.isArray(dataList)) {
-        return dataList;
+        if (Array.isArray(dataList)) {
+          return {
+            region: data?.region ?? "",
+            timezone: data?.region_time_zone ?? 8,
+            list: dataList,
+          };
+        }
       }
       throw new Error();
     }
@@ -728,6 +713,6 @@ class GenshinExtractor extends BaseExtractor {
   }
 }
 
-const extractor = new GenshinExtractor();
+const extractor = new StarRailExtractor();
 
 export default extractor;

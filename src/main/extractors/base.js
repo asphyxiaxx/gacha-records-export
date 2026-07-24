@@ -175,11 +175,8 @@ class BaseExtractor {
     transaction();
   }
 
-  async _readUIGFDict() {
-    if (!this.UIGFKey) return null;
-
-    const gameId = this.id;
-    const filename = `uigf_${gameId}.json`;
+  async _readUIGFDict(gameId, lang) {
+    const filename = `uigf_${gameId}_${lang}.json`;
 
     try {
       // Get the locally saved MD5 and data
@@ -195,14 +192,14 @@ class BaseExtractor {
           const md5Data = await md5Resp.json();
 
           // Compare our local hash to the API's 'all' hash
-          if (hash(fileData, "md5") === md5Data["all"]) {
+          if (hash(fileData, "md5") === md5Data[lang]) {
             localData = JSON.parse(fileData);
           }
         }
       }
 
       if (!localData) {
-        const dataUrl = `https://api.uigf.org/dict/${gameId}/all.json`;
+        const dataUrl = `https://api.uigf.org/dict/${gameId}/${lang}.json`;
         const dataResp = await request(dataUrl);
 
         if (!dataResp.ok) {

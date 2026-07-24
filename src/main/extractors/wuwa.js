@@ -14,18 +14,61 @@ const API_SEA = "https://gmserver-api.aki-game2.net";
 const GACHA_TYPES = ["1", "2", "3", "4", "5", "6", "7"];
 
 const WEAPON_TYPE_NAMES = new Set([
-  "武器",
+  // English
   "Weapon",
+  "weapon",
+  // Chinese (Simplified & Traditional) & Japanese
+  "武器",
+  // Korean
   "무기",
+  // Spanish
   "Arma",
+  "arma",
+  // French
   "Arme",
-  "Оружие",
-  "อาวุธ",
-  "Vũ Khí",
+  "arme",
+  // German
   "Waffe",
+  "waffe",
+  // Russian
+  "Оружие",
+  "оружие",
+  // Thai
+  "อาวุธ",
+  // Vietnamese
+  "Vũ Khí",
+  "Vũ khí",
+  "vũ khí",
+  // Indonesian / Malay
   "Senjata",
+  "senjata",
 ]);
-const RESONATOR_TYPE_NAMES = new Set(["Resonator"]);
+
+const RESONATOR_TYPE_NAMES = new Set([
+  // English, German, Indonesian, Vietnamese (In-game)
+  "Resonator",
+  "resonator",
+  // Chinese (Simplified)
+  "共鸣者",
+  // Chinese (Traditional) & Japanese
+  "共鳴者",
+  // Korean
+  "공명자",
+  // Spanish
+  "Resonador",
+  "resonador",
+  // French
+  "Résonateur",
+  "résonateur",
+  // Russian
+  "Резонатор",
+  "резонатор",
+  // Thai
+  "เรโซเนเตอร์",
+  // Vietnamese (Alternative translation)
+  "Nhà Cộng Hưởng",
+  "Nhà cộng hưởng",
+]);
 
 function getApi(url) {
   const host = url.host;
@@ -79,7 +122,7 @@ function parseResourceType(value) {
 }
 
 class WutheringWavesExtractor extends BaseExtractor {
-  id = "wuthering_waves";
+  id = "wuwa";
 
   /** SQL */
   tableSchema = {
@@ -114,8 +157,8 @@ class WutheringWavesExtractor extends BaseExtractor {
     const uid = this.currentUID;
     if (!uid) return null;
 
-    const gachaType = i18n.games.wuthering_waves.gachaType;
-    const excel = i18n.games.wuthering_waves.excel;
+    const typeNames = i18n.games.wuwa.types;
+    const excel = i18n.games.wuwa.excel;
     const sheets = [];
     const columns = [
       {
@@ -133,7 +176,7 @@ class WutheringWavesExtractor extends BaseExtractor {
     ];
 
     GACHA_TYPES.forEach((type) => {
-      const name = gachaType[type] ?? type;
+      const name = typeNames[type] ?? type;
       const rows = [];
       const rowFormats = [];
       const items = this._data({ uid, type });
@@ -172,7 +215,13 @@ class WutheringWavesExtractor extends BaseExtractor {
     const uid = this.currentUID;
     if (!uid) return null;
 
-    const orderKey = ["resonator5", "weapon5", "resonator4", "weapon4", "weapon3"];
+    const orderKey = [
+      "resonator5",
+      "weapon5",
+      "resonator4",
+      "weapon4",
+      "weapon3",
+    ];
     const orderStat = ["star5", "star4", "star3"];
     const summary = [];
     const fetchTimestamps = [];
@@ -286,8 +335,10 @@ class WutheringWavesExtractor extends BaseExtractor {
   }
 
   async getUrl() {
+    const text = i18n.games.wuwa.log;
+
     if (!this.#gamePath && !this.#selectGamePath()) {
-      throw new Error(i18n.log.file.notFound);
+      throw new Error(text.file.notFound);
     }
 
     const filepath = path.join(
@@ -303,7 +354,7 @@ class WutheringWavesExtractor extends BaseExtractor {
       buffer = await fs.readFile(filepath);
     } catch (e) {
       log.warn(`Failed to read log file: ${e}`);
-      throw new Error(i18n.log.file.notFound);
+      throw new Error(text.file.notFound);
     }
 
     //
@@ -318,15 +369,12 @@ class WutheringWavesExtractor extends BaseExtractor {
     if (m) {
       return m[m.length - 1];
     }
-    throw new Error(i18n.log.url.notFound);
+    throw new Error(text.url.notFound);
   }
 
   async *fetchData(url = null) {
-    const text = i18n.log;
-    const game = i18n.games[this.id] ?? {};
-    const gachaType = game.gachaType ?? {};
-
-    // Setup
+    const text = i18n.games.wuwa.log;
+    const typeNames = i18n.games.wuwa.types;
     const extractedUrl = new URL(url ?? (await this.getUrl()));
     const params = new URLSearchParams(
       extractedUrl.hash.slice(extractedUrl.hash.indexOf("?") + 1),
@@ -341,7 +389,7 @@ class WutheringWavesExtractor extends BaseExtractor {
         params.get("resources_id")
       )
     ) {
-      throw new Error(i18n.log.url.lackAuth);
+      throw new Error(text.url.lackAuth);
     }
 
     // Start
@@ -363,7 +411,7 @@ class WutheringWavesExtractor extends BaseExtractor {
     for (const type of GACHA_TYPES) {
       payload["cardPoolType"] = parseInt(type);
 
-      const typeName = gachaType[type] ?? type;
+      const typeName = typeNames[type] ?? type;
       const list = yield* this.#fetchPage(typeName, finalUrl, payload);
 
       const items = list.reverse().map((item) => {
@@ -392,7 +440,7 @@ class WutheringWavesExtractor extends BaseExtractor {
 
   #selectGamePath() {
     const filePaths = dialog.showOpenDialogSync({
-      title: i18n.log.gamePath.select,
+      title: i18n.log.selectGamePath,
       properties: ["openDirectory"],
     });
 
@@ -412,11 +460,11 @@ class WutheringWavesExtractor extends BaseExtractor {
   }
 
   async *#fetchPage(name, url, payload) {
-    const text = i18n.log;
+    const text = i18n.games.wuwa.log;
     const page = 1;
     let retries = 5;
 
-    yield new SentinelMessage(parseText(text.fetch.current, { name, page }));
+    yield new SentinelMessage(parseText(text.fetch.current, { name }));
 
     while (true) {
       let result;
@@ -433,11 +481,11 @@ class WutheringWavesExtractor extends BaseExtractor {
         log.warn(`Failed to fetch gacha logs: ${e}`);
 
         if (!retries--) {
-          throw new Error(parseText(text.fetch.retryFailed, { name, page }));
+          throw new Error(parseText(text.fetch.retryFailed, { name }));
         }
 
         yield new SentinelMessage(
-          parseText(text.fetch.retry, { name, page, count: 5 - retries }),
+          parseText(text.fetch.retry, { name, count: 5 - retries }),
         );
 
         await sleep(5);

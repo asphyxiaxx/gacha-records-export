@@ -65,7 +65,7 @@
           @click="removeUID(selectedUID)"
         />
 
-        <el-tooltip v-if="state.releaseUrl" :content="ui.hint.relaunchHint">
+        <el-tooltip v-if="state.releaseUrl" :content="ui.hint.updateAvailable">
           <el-button
             @click="openExternal(state.releaseUrl)"
             type="success"
@@ -114,20 +114,19 @@
     >
       <div class="mb-4" v-for="data in summary" :key="data.type">
         <p class="text-center text-gray-600 my-2">
-          {{ gachaType[data.type] ?? data.type }}
+          {{ typeNames[data.type] ?? data.type }}
         </p>
         <pie-chart
-          :name="gachaType[data.type] ?? data.type"
+          :name="typeNames[data.type] ?? data.type"
           :i18n="state.i18n"
-          :keys="keys"
+          :game="game"
           :data="data"
         >
         </pie-chart>
         <gacha-detail
-          :name="gachaType[data.type] ?? data.type"
+          :name="typeNames[data.type] ?? data.type"
           :i18n="state.i18n"
           :game="game"
-          :keys="keys"
           :data="data"
         >
         </gacha-detail>
@@ -218,8 +217,7 @@ const state = reactive({
 const ui = computed(() => state.i18n.ui);
 const games = computed(() => state.i18n.games);
 const game = computed(() => games.value?.[state.config.currentGameId] ?? {});
-const keys = computed(() => game.value?.keys ?? {});
-const gachaType = computed(() => game.value?.gachaType ?? {});
+const typeNames = computed(() => game.value?.types ?? {});
 
 const selectedUID = computed(() => {
   return state.currentData

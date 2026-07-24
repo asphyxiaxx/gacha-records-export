@@ -72,83 +72,125 @@
         </p>
       </el-form-item>
 
+      <!-- Game specified settings -->
       <el-collapse accordion>
         <el-collapse-item
           v-for="(gameSettings, gameId) in settingForm.games"
           :key="gameId"
-          :title="games[gameId] ? games[gameId].title : gameId"
           :name="gameId"
+          :title="games[gameId]?.title ?? gameId"
         >
           <div class="p-2">
-            <!-- LogType -->
-            <el-form-item
-              v-if="gameSettings.logType !== undefined"
-              :label="setting.logType"
+            <!-- Genshin Impact -->
+            <template
+              v-if="gameId === 'genshin'"
+              v-for="s in [games.genshin.ui.setting]"
             >
-              <el-radio-group
-                @change="updateSetting()"
-                v-model.number="gameSettings.logType"
-              >
-                <el-radio-button :label="0">{{ setting.auto }}</el-radio-button>
-                <el-radio-button :label="1">{{
-                  setting.cnServer
-                }}</el-radio-button>
-                <el-radio-button :label="2">{{
-                  setting.seaServer
-                }}</el-radio-button>
-                <el-radio-button :label="3">{{
-                  setting.cloudServer
-                }}</el-radio-button>
-              </el-radio-group>
-              <p class="text-gray-400 text-xs m-1.5">
-                {{ setting.logTypeHint }}
-              </p>
-            </el-form-item>
-            <!-- hideNovice -->
-            <el-form-item
-              v-if="gameSettings.hideNovice !== undefined"
-              :label="setting.hideNovice"
+              <!-- LogType -->
+              <el-form-item :label="s.logType">
+                <el-radio-group
+                  @change="updateSetting()"
+                  v-model.number="gameSettings.logType"
+                >
+                  <el-radio-button :label="0">
+                    {{ s.auto }}
+                  </el-radio-button>
+                  <el-radio-button :label="1">
+                    {{ s.cnServer }}
+                  </el-radio-button>
+                  <el-radio-button :label="2">
+                    {{ s.seaServer }}
+                  </el-radio-button>
+                  <el-radio-button :label="3">
+                    {{ s.cloudServer }}
+                  </el-radio-button>
+                </el-radio-group>
+                <p class="text-gray-400 text-xs m-1.5">
+                  {{ s.logTypeHint }}
+                </p>
+              </el-form-item>
+              <!-- hideNovice -->
+              <el-form-item :label="s.hideNovice">
+                <el-switch
+                  @change="updateSetting()"
+                  v-model="gameSettings.hideNovice"
+                >
+                </el-switch>
+              </el-form-item>
+              <!-- fetchFullHistory -->
+              <el-form-item :label="s.fetchFullHistory">
+                <el-switch
+                  @change="updateSetting()"
+                  v-model="gameSettings.fetchFullHistory"
+                >
+                </el-switch>
+                <p class="text-gray-400 text-xs m-1.5">
+                  {{ s.fetchFullHistoryHint }}
+                </p>
+              </el-form-item>
+            </template>
+
+            <!-- Honkai: Star Rail -->
+            <template
+              v-else-if="gameId === 'starrail'"
+              v-for="s in [games.starrail.ui.setting]"
             >
-              <el-switch
-                @change="updateSetting()"
-                v-model="gameSettings.hideNovice"
-              >
-              </el-switch>
-            </el-form-item>
-            <!-- fetchFullHistory -->
-            <el-form-item
-              v-if="gameSettings.fetchFullHistory !== undefined"
-              :label="setting.fetchFullHistory"
+              <!-- LogType -->
+              <el-form-item :label="s.logType">
+                <el-radio-group
+                  @change="updateSetting()"
+                  v-model.number="gameSettings.logType"
+                >
+                  <el-radio-button :label="0">
+                    {{ s.auto }}
+                  </el-radio-button>
+                  <el-radio-button :label="1">
+                    {{ s.cnServer }}
+                  </el-radio-button>
+                  <el-radio-button :label="2">
+                    {{ s.seaServer }}
+                  </el-radio-button>
+                </el-radio-group>
+                <p class="text-gray-400 text-xs m-1.5">
+                  {{ s.logTypeHint }}
+                </p>
+              </el-form-item>
+              <!-- fetchFullHistory -->
+              <el-form-item :label="s.fetchFullHistory">
+                <el-switch
+                  @change="updateSetting()"
+                  v-model="gameSettings.fetchFullHistory"
+                >
+                </el-switch>
+                <p class="text-gray-400 text-xs m-1.5">
+                  {{ s.fetchFullHistoryHint }}
+                </p>
+              </el-form-item>
+            </template>
+
+            <!-- Wuthering Waves -->
+            <template
+              v-else-if="gameId === 'wuwa'"
+              v-for="s in [games.wuwa.ui.setting]"
             >
-              <el-switch
-                @change="updateSetting()"
-                v-model="gameSettings.fetchFullHistory"
-              >
-              </el-switch>
-              <p class="text-gray-400 text-xs m-1.5">
-                {{ setting.fetchFullHistoryHint }}
-              </p>
-            </el-form-item>
-            <!-- selectGamePath -->
-            <el-form-item
-              v-if="gameSettings.gamePath !== undefined"
-              :label="setting.gamePath"
-            >
-              <el-input
-                v-model="gameSettings.gamePath"
-                placeholder="Select game directory or executable..."
-                readonly
-              >
-                <template #append>
-                  <el-button
-                    :icon="FolderOpened"
-                    @click="selectGamePath(gameId)"
-                  >
-                    {{ setting.browse }}
-                  </el-button>
-                </template>
-              </el-input>
-            </el-form-item>
+              <!-- selectGamePath -->
+              <el-form-item :label="s.gamePath">
+                <el-input
+                  v-model="gameSettings.gamePath"
+                  placeholder="Select game directory or executable..."
+                  readonly
+                >
+                  <template #append>
+                    <el-button
+                      :icon="FolderOpened"
+                      @click="selectGamePath(gameId)"
+                    >
+                      {{ s.browse }}
+                    </el-button>
+                  </template>
+                </el-input>
+              </el-form-item>
+            </template>
           </div>
         </el-collapse-item>
       </el-collapse>

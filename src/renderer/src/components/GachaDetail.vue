@@ -20,7 +20,7 @@
     <div v-if="data.last !== null" class="font-medium">
       {{ detail.sum }}
       <span class="text-green-600 font-bold mx-1">{{ data.last }}</span>
-      {{ game.without }}
+      {{ gameDetail.without }}
     </div>
   </div>
 
@@ -42,11 +42,11 @@
 
   <div v-if="average && history.length" class="border-t border-gray-100">
     <div class="space-y-1 mt-1 mb-1 text-xs text-gray-500">
-      <span class="font-semibold">{{ game.average }}{{ colon }}</span>
+      <span class="font-semibold">{{ gameDetail.average }}{{ colon }}</span>
       <span class="text-green-600 font-bold">{{ average }}</span>
     </div>
     <div class="space-y-1 mb-1 text-xs text-gray-500">
-      <span class="font-semibold">{{ game.history }}{{ colon }}</span>
+      <span class="font-semibold">{{ gameDetail.history }}{{ colon }}</span>
       <div
         class="flex flex-wrap gap-x-2 gap-y-1 mt-1 max-h-32 overflow-y-auto pr-1 custom-scrollbar"
       >
@@ -87,16 +87,16 @@ const props = defineProps({
   name: String,
   i18n: Object,
   game: Object,
-  keys: Object,
   data: Object,
 });
 
 const type = 1;
 const data = computed(() => props.data);
-const game = computed(() => props.game);
-const keys = computed(() => props.keys);
-const detail = computed(() => props.i18n.ui.detail);
-const colon = computed(() => props.i18n.symbol.colon);
+const colon = computed(() => props.i18n?.symbol.colon ?? ":");
+const detail = computed(() => props.i18n?.ui.detail ?? {});
+const gameDetail = computed(() => props.game?.ui.detail ?? {});
+const keys = computed(() => props.game?.ui.keys ?? {});
+
 
 const startDate = computed(() =>
   new Date(props.data.startDate).toLocaleDateString(),

@@ -30,7 +30,7 @@ use([
 const props = defineProps({
   name: String,
   i18n: Object,
-  keys: Object,
+  game: Object,
   data: Object,
 });
 const chart = ref(null);
@@ -38,12 +38,13 @@ const chart = ref(null);
 let pieChart = null;
 
 function parseData(data) {
+  const text = props.game.ui.keys;
   const chartData = [];
   const color = [];
   const selected = {};
 
   for (const detail of data.counts) {
-    const name = props.keys[detail.name] ?? detail.name;
+    const name = text[detail.name] ?? detail.name;
 
     chartData.push({
       name: name,

@@ -1,22 +1,23 @@
 import Ajv2020 from "ajv/dist/2020.js";
-import { URL } from "url";
 import { name as appName, version as appVersion } from "../../../package.json";
 import UIGF41Schema from "../../uigf_schema/uigf4_1.json";
 import config from "../config";
 
-import genshinExtractor from "./genshin.js";
-// import StarRailExtractor from "./star_rail.js";
-import wutheringWavesExtractor from "./wuthering_waves.js";
+import genshinExtr from "./genshin.js";
+import starrailExtr from "./starrail.js";
+import wuwaExtr from "./wuwa.js";
 
 const validateUIGF41 = new Ajv2020({ strict: false }).compile(UIGF41Schema);
 
 class ExtractorsManager {
   #games = {
-    genshin: genshinExtractor,
-    wuthering_waves: wutheringWavesExtractor,
+    [genshinExtr.id]: genshinExtr,
+    [starrailExtr.id]: starrailExtr,
+    [wuwaExtr.id]: wuwaExtr,
   };
   #uigfs = {
-    hk4e: genshinExtractor,
+    [genshinExtr.UIGFKey]: genshinExtr,
+    [starrailExtr.UIGFKey]: starrailExtr,
   };
 
   get gameIds() {
@@ -100,7 +101,8 @@ class ExtractorsManager {
   }
 
   #getExtractor() {
-    const extr = this.#games[config.currentGameId];
+    const gameId = config.currentGameId;
+    const extr = this.#games[gameId];
     if (!extr) {
       throw new Error(`Unknown game id '${gameId}'`);
     }

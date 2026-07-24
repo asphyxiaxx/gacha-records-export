@@ -7,26 +7,56 @@
     "games": {
         "genshin": {
             "title": "Genshin Impact",
-            "without": "pulls without a 5 star",
-            "history": "5 star history",
-            "average": "5 star on average",
-            "keys": {
-                "star5": "5 star",
-                "star4": "4 star",
-                "star3": "3 star",
-                "chara5": "5 star character",
-                "chara4": "4 star character",
-                "weapon5": "5 star weapon",
-                "weapon4": "4 star weapon",
-                "weapon3": "3 star weapon"
-            },
-            "gachaType": {
+            "types": {
                 "200": "Permanent Wish",
                 "100": "Novice Wishes",
                 "301": "Character Event Wish",
                 "302": "Weapon Event Wish",
                 "400": "Character Event Wish-2",
                 "500": "Chronicled Wish and Lightrace Wish"
+            },
+            "log": {
+                "file": {
+                    "notFound": "Unable to find game logs, please make sure you already opened wish history inside the game client"
+                },
+                "url": {
+                    "lackAuth": "Required authentication parameters not found in URL"
+                },
+                "fetch": {
+                    "fetchRetry": "Processing ${name} of page ${page} failed，retrying in 5 seconds for the ${count} time……",
+                    "fetchRetryFailed": "Processing ${name} of page ${page} failed，retry times maxed out",
+                    "fetchInterval": "Processing ${name} of page ${page}，1 second timeout every 10 pages……",
+                    "fetchCurrent": "Processing ${name} of page ${page}",
+                    "authTimeout": "User authentication expired, please reopen wish history inside the game client."
+                }
+            },
+            "ui": {
+                "setting": {
+                    "fetchFullHistory": "Get complete data",
+                    "fetchFullHistoryHint": "When this option is enabled, click the \"Update Data\" button to get all the card draw records within 6 months. When there are incorrect data within 6 months, this function can be used to repair.",
+                    "hideNovice": "Hide novice wishes",
+                    "logType": "Log type",
+                    "logTypeHint": "Choose which server generated logs to be used first when acquiring URL from game logs",
+                    "auto": "Auto",
+                    "cnServer": "CN server",
+                    "seaServer": "Global server",
+                    "cloudServer": "Cloud server"
+                },
+                "detail": {
+                    "without": "pulls without a 5 star",
+                    "history": "5 star history",
+                    "average": "5 star on average"
+                },
+                "keys": {
+                    "star5": "5 star",
+                    "star4": "4 star",
+                    "star3": "3 star",
+                    "character5": "5 star character",
+                    "character4": "4 star character",
+                    "weapon5": "5 star weapon",
+                    "weapon4": "4 star weapon",
+                    "weapon3": "3 star weapon"
+                }
             },
             "excel": {
                 "header": {
@@ -42,22 +72,74 @@
                 "filePrefix": "Genshin wish logger"
             }
         },
-        "wuthering_waves": {
-            "title": "Wuthering Waves",
-            "without": "pulls without a 5 star",
-            "history": "5 star history",
-            "average": "5 star on average",
-            "keys": {
-                "star5": "5 star",
-                "star4": "4 star",
-                "star3": "3 star",
-                "resonator5": "5 star resonator",
-                "resonator4": "4 star resonator",
-                "weapon5": "5 star weapon",
-                "weapon4": "4 star weapon",
-                "weapon3": "3 star weapon"
+        "starrail": {
+            "title": "Honkai: Star Rail",
+            "types": {
+                "11": "Character Event Warp",
+                "12": "Light Cone Event Warp",
+                "1": "Regular Warp",
+                "2": "Starter Warp",
+                "21": "Character Collaboration Warp",
+                "22": "Light Cone Collaboration Warp"
             },
-            "gachaType": {
+            "log": {
+                "file": {
+                    "notFound": "Unable to find game logs, please make sure you already opened wish history inside the game client"
+                },
+                "url": {
+                    "lackAuth": "Required authentication parameters not found in URL"
+                },
+                "fetch": {
+                    "retry": "Processing ${name} of page ${page} failed，retrying in 5 seconds for the ${count} time……",
+                    "retryFailed": "Processing ${name} of page ${page} failed，retry times maxed out",
+                    "interval": "Processing ${name} of page ${page}，1 second timeout every 10 pages……",
+                    "current": "Processing ${name} of page ${page}",
+                    "authTimeout": "User authentication expired, please reopen wish history inside the game client."
+                }
+            },
+            "ui": {
+                "setting": {
+                    "fetchFullHistory": "Get complete data",
+                    "fetchFullHistoryHint": "When this option is enabled, click the \"Update Data\" button to get all the card draw records within 6 months. When there are incorrect data within 6 months, this function can be used to repair.",
+                    "hideNovice": "Hide novice wishes",
+                    "logType": "Log type",
+                    "logTypeHint": "Choose which server generated logs to be used first when acquiring URL from game logs",
+                    "auto": "Auto",
+                    "cnServer": "CN server",
+                    "seaServer": "Global server"
+                },
+                "detail": {
+                    "without": "pulls without a 5 star",
+                    "history": "5 star history",
+                    "average": "5 star on average"
+                },
+                "keys": {
+                    "star5": "5 star",
+                    "star4": "4 star",
+                    "star3": "3 star",
+                    "character5": "5 star character",
+                    "character4": "4 star character",
+                    "lightcone5": "5 star light cone",
+                    "lightcone4": "4 star light cone",
+                    "lightcone3": "3 star light cone"
+                }
+            },
+            "excel": {
+                "header": {
+                    "time": "Time",
+                    "name": "Name",
+                    "type": "Type",
+                    "rank": "Rarity",
+                    "total": "Total",
+                    "pity": "Within pity",
+                    "remark": "Remark"
+                },
+                "filePrefix": "Honkai: Star Rail warp logger"
+            }
+        },
+        "wuwa": {
+            "title": "Wuthering Waves",
+            "types": {
                 "1": "Featured Resonator",
                 "2": "Featured Weapon",
                 "3": "Permanent Resonator",
@@ -65,6 +147,42 @@
                 "5": "Beginner Convene",
                 "6": "Beginner Selector",
                 "7": "Convene Giveback Event"
+            },
+            "log": {
+                "file": {
+                    "notFound": "Unable to find game logs, please make sure you already opened convene history inside the game client"
+                },
+                "url": {
+                    "lackAuth": "Required authentication parameters not found in URL",
+                    "notFound": "Unable to find the url in the game logs, please make sure you already opened convene history inside the game client"
+                },
+                "fetch": {
+                    "retry": "Processing ${name} failed，retrying in 5 seconds for the ${count} time...",
+                    "retryFailed": "Processing ${name} failed，retry times maxed out",
+                    "current": "Processing ${name}",
+                    "authTimeout": "User authentication expired, please reopen wish history inside the game client."
+                }
+            },
+            "ui": {
+                "setting": {
+                    "gamePath": "Game path",
+                    "browse": "Browse"
+                },
+                "detail": {
+                    "without": "pulls without a 5 star",
+                    "history": "5 star history",
+                    "average": "5 star on average"
+                },
+                "keys": {
+                    "star5": "5 star",
+                    "star4": "4 star",
+                    "star3": "3 star",
+                    "resonator5": "5 star resonator",
+                    "resonator4": "4 star resonator",
+                    "weapon5": "5 star weapon",
+                    "weapon4": "4 star weapon",
+                    "weapon3": "3 star weapon"
+                }
             },
             "excel": {
                 "header": {
@@ -100,7 +218,7 @@
             "init": "Please open your wish history inside the game client before clicking on the 'Load data' button",
             "lastUpdate": "Last update",
             "failed": "Oops, something failed",
-            "relaunchHint": "The update has been completed, it will take effect after clicking the button to restart the tool"
+            "updateAvailable": "The new update is available, click the button to go to the download page."
         },
         "win": {
             "title": "Gacha Records History Exporter"
@@ -121,18 +239,7 @@
             "UIGFImportSuccessed": "Data has been imported",
             "UIGFExportSuccessed": "Data has been exported",
             "UIGFHint": "This feature is used for importing/exporting data (the first export may take some time). Refer to this link for supported tools:",
-            "UIGFLink": "Uniformed Interchangeable GachaLog Format Standard",
-            "fetchFullHistory": "Get complete data",
-            "fetchFullHistoryHint": "When this option is enabled, click the \"Update Data\" button to get all the card draw records within 6 months. When there are incorrect data within 6 months, this function can be used to repair.",
-            "hideNovice": "Hide novice wishes",
-            "logType": "Log type",
-            "logTypeHint": "Choose which server generated logs to be used first when acquiring URL from game logs",
-            "auto": "Auto",
-            "cnServer": "CN server",
-            "seaServer": "Global server",
-            "cloudServer": "Cloud server",
-            "gamePath": "Game path",
-            "browse": "Browse"
+            "UIGFLink": "Uniformed Interchangeable GachaLog Format Standard"
         },
         "about": {
             "title": "About",
@@ -155,35 +262,8 @@
         }
     },
     "log": {
-        "save": {
-            "failed": "Failed to save local data"
-        },
-        "file": {
-            "notFound": "Unable to find game logs, please make sure you already opened wish history inside the game client",
-            "readFailed": "Failed to read logs",
-            "skipJSON": "Skipping corrupt JSON file"
-        },
-        "gamePath": {
-            "select": "Select game installation path"
-        },
-        "url": {
-            "notFound": "Unable to find URL",
-            "lackAuth": "Required authentication parameters not found in URL",
-            "notFound2": "Unable to find URL, please make sure you already opened wish history inside the game client",
-            "incorrect": "Unable to get URL parameters"
-        },
-        "fetch": {
-            "retry": "Processing ${name} of page ${page} failed，retrying in 5 seconds for the ${count} time……",
-            "retryFailed": "Processing ${name} of page ${page} failed，retry times maxed out",
-            "interval": "Processing ${name} of page ${page}，1 second timeout every 10 pages……",
-            "current": "Processing ${name} of page ${page}",
-            "authTimeout": "User authentication expired, please reopen wish history inside the game client.",
-            "gachaType": "Getting wish type, please wait",
-            "gachaTypeOk": "Wish type acquired"
-        },
-        "autoUpdate": {
-            "success": "Auto update successful，please restart the program"
-        }
+        "selectGamePath": "Select game installation path",
+        "autoUpdateSuccess": "Auto update successful，please restart the program"
     },
     "excel": {
         "fileType": "Excel file",

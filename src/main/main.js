@@ -120,7 +120,7 @@ if (app.requestSingleInstanceLock()) {
 
   ipcMain.handle("SELECT_GAME_PATH", async (event) => {
     const filePaths = dialog.showOpenDialogSync({
-      title: i18n.log.gamePath.select,
+      title: i18n.log.selectGamePath,
       properties: ["openDirectory"],
     });
 
