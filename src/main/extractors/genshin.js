@@ -295,7 +295,7 @@ class GenshinExtractor extends BaseExtractor {
             item.name,
             item.itemType,
             parseInt(item.rankType),
-            index,
+            index + 1,
             index - lastRank5,
             remark,
           ]);
