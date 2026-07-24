@@ -259,7 +259,7 @@ class StarRailExtractor extends BaseExtractor {
       const items = this._data({ uid, gachaType });
 
       if (items && items.length) {
-        let lastRank5 = 0;
+        let lastRank5 = -1;
 
         items.forEach((item, index) => {
           const remark = "";

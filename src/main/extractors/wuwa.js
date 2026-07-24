@@ -182,7 +182,7 @@ class WutheringWavesExtractor extends BaseExtractor {
       const items = this._data({ uid, type });
 
       if (items && items.length) {
-        let lastRank5 = 0;
+        let lastRank5 = -1;
 
         items.forEach((item, index) => {
           const remark = "";
@@ -191,7 +191,7 @@ class WutheringWavesExtractor extends BaseExtractor {
             item.name,
             item.resourceType,
             item.qualityLevel,
-            index,
+            index + 1,
             index - lastRank5,
             remark,
           ]);
