@@ -32,7 +32,9 @@
     "asar": true,
     "win": {
       "target": [
-        "portable"
+        "portable",
+        "zip",
+        "nsis"
       ],
       "icon": "assets/icons/icon.ico"
     },
