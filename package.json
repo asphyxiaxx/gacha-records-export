@@ -1,6 +1,6 @@
 {
   "name": "gacha-records-export",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "./out/main/main.js",
   "author": "asphxiaxx <https://github.com/asphyxiaxx/gacha-records-export>",
   "homepage": "https://github.com/asphyxiaxx/gacha-records-export",
