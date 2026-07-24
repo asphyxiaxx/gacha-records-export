@@ -520,6 +520,7 @@ class GenshinExtractor extends BaseExtractor {
               lang: item.lang,
               id: item.id,
               name: item.name,
+              count: item.count,
               itemType: item.item_type,
               itemTypeNorm: parseItemType(item.item_type),
               rankType: item.rank_type,
