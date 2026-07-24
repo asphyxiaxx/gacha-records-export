@@ -168,6 +168,44 @@
               </el-form-item>
             </template>
 
+            <!-- Zenless Zone Zero -->
+            <template
+              v-else-if="gameId === 'zzz'"
+              v-for="s in [games.zzz.ui.setting]"
+            >
+              <!-- LogType -->
+              <el-form-item :label="s.logType">
+                <el-radio-group
+                  @change="updateSetting()"
+                  v-model.number="gameSettings.logType"
+                >
+                  <el-radio-button :label="0">
+                    {{ s.auto }}
+                  </el-radio-button>
+                  <el-radio-button :label="1">
+                    {{ s.cnServer }}
+                  </el-radio-button>
+                  <el-radio-button :label="2">
+                    {{ s.seaServer }}
+                  </el-radio-button>
+                </el-radio-group>
+                <p class="text-gray-400 text-xs m-1.5">
+                  {{ s.logTypeHint }}
+                </p>
+              </el-form-item>
+              <!-- fetchFullHistory -->
+              <el-form-item :label="s.fetchFullHistory">
+                <el-switch
+                  @change="updateSetting()"
+                  v-model="gameSettings.fetchFullHistory"
+                >
+                </el-switch>
+                <p class="text-gray-400 text-xs m-1.5">
+                  {{ s.fetchFullHistoryHint }}
+                </p>
+              </el-form-item>
+            </template>
+
             <!-- Wuthering Waves -->
             <template
               v-else-if="gameId === 'wuwa'"

@@ -9,38 +9,33 @@ import { formatTimestamp, parseText, sleep } from "../utils.js";
 import BaseExtractor from "./base.js";
 import { SentinelMessage } from "./message.js";
 
-const API_CN = "https://public-operation-hkrpg.mihoyo.com";
-const API_SEA = "https://public-operation-hkrpg-sg.hoyoverse.com";
+const API_CN = "https://public-operation-nap.mihoyo.com";
+const API_SEA = "https://public-operation-nap-sg.hoyoverse.com";
 
-const GACHA_TYPES = ["11", "12", "1", "2", "21", "22"];
+const GACHA_TYPES = ["2", "3", "5", "102", "103", "1"];
 
-const LIGHT_CONE_TYPE_NAMES = new Set([
-  "光锥",
-  "光錐",
-  "Lichtkegel",
-  "Light Cone",
-  "Conos de luz",
-  "cônes de lumière",
-  "光円錐",
-  "광추",
-  "Cones de Luz",
-  "Световые конусы",
-  "Nón Ánh Sáng",
-  "Cône de lumière",
+const AGENT_TYPE_NAMES = new Set([
+  "代理人",
+  "代理人",
+  "Agents",
+  "エージェント",
+  "에이전트",
 ]);
-const CHARACTER_TYPE_NAMES = new Set([
-  "角色",
-  "Character",
-  "캐릭터",
-  "キャラクター",
-  "Personaje",
-  "Personnage",
-  "Персонажи",
-  "ตัวละคร",
-  "Nhân Vật",
-  "Figur",
-  "Karakter",
-  "Personagem",
+
+const ENGINE_TYPE_NAMES = new Set([
+  "音擎",
+  "音擎",
+  "W-Engines",
+  "音動機",
+  "W-엔진",
+]);
+
+const BANGBOO_TYPE_NAMES = new Set([
+  "邦布",
+  "邦布",
+  "Bangboo",
+  "ボンプ",
+  "「Bangboo」",
 ]);
 
 const API_LANGS = {
@@ -79,22 +74,19 @@ const UIGF_DICT_LANGS = {
 
 function getApi(url) {
   const host = url.host;
-  if (
-    host.includes("webstatic-sea") ||
-    host.includes("hkrpg-api-os") ||
-    host.includes("api-os-takumi") ||
-    host.includes("hoyoverse.com")
-  ) {
+  if (host.includes("webstatic-sea") || host.includes("hoyoverse.com")) {
     return API_SEA;
   }
   return API_CN;
 }
 
 function parseItemType(value) {
-  if (LIGHT_CONE_TYPE_NAMES.has(value)) {
-    return "lightcone";
-  } else if (CHARACTER_TYPE_NAMES.has(value)) {
-    return "character";
+  if (ENGINE_TYPE_NAMES.has(value)) {
+    return "engine";
+  } else if (AGENT_TYPE_NAMES.has(value)) {
+    return "agent";
+  } else if (BANGBOO_TYPE_NAMES.has(value)) {
+    return "bangboo";
   }
   return "unknown";
 }
@@ -104,9 +96,9 @@ async function readLocalSEALog() {
     app.getPath("home"),
     "AppData",
     "LocalLow",
-    "Cognosphere",
-    "Star Rail",
-    "output_log.txt",
+    "miHoYo",
+    "ZenlessZoneZero",
+    "Player.log",
   );
   return readLocalLog(filepath);
 }
@@ -117,8 +109,8 @@ async function readLocalCNLog() {
     "AppData",
     "LocalLow",
     "miHoYo",
-    "崩坏：星穹铁道",
-    "output_log.txt",
+    "绝区零",
+    "Player.log",
   );
   return readLocalLog(filepath);
 }
@@ -133,7 +125,7 @@ async function readLocalLog(filepath) {
     return null;
   }
 
-  m = data.match(/\w:\\.*?\\StarRail_Data\\/gi);
+  m = data.match(/\w:\\.*?\\ZenlessZoneZero_Data\\/gi);
   if (!m) {
     log.warn(`Unable to find the game path from file '${filepath}'`);
     return null;
@@ -179,7 +171,7 @@ async function readLocalLog(filepath) {
   }
 
   m = data.match(
-    /https[^?]+?\?[^?]+?&auth_appid=webview_gacha&.+?authkey=.+?&game_biz=hkrpg_/g,
+    /https[^?]+?\?[^?]+?&auth_appid=webview_gacha&.+?authkey=.+?&game_biz=nap/g,
   );
   if (!m) {
     log.warn(`Unable to find gacha url in '${logfile}'`);
@@ -189,8 +181,8 @@ async function readLocalLog(filepath) {
   return m[m.length - 1];
 }
 
-class StarRailExtractor extends BaseExtractor {
-  id = "starrail";
+class ZenlessZoneZeroExtractor extends BaseExtractor {
+  id = "zzz";
 
   /** SQL */
   tableSchema = {
@@ -209,7 +201,7 @@ class StarRailExtractor extends BaseExtractor {
   };
 
   /** UIGF */
-  UIGFKey = "hkrpg";
+  UIGFKey = "nap";
   #UIGFItemsMap = new Map();
 
   /** Configurations */
@@ -234,8 +226,8 @@ class StarRailExtractor extends BaseExtractor {
     const uid = this.currentUID;
     if (!uid) return null;
 
-    const gachaTypeNames = i18n.games.starrail.types;
-    const excel = i18n.games.starrail.excel;
+    const gachaTypeNames = i18n.games.zzz.types;
+    const excel = i18n.games.zzz.excel;
     const sheets = [];
     const columns = [
       {
@@ -263,22 +255,30 @@ class StarRailExtractor extends BaseExtractor {
 
         items.forEach((item, index) => {
           const remark = "";
+          let rank;
+
+          if (item.rankType === "4") {
+            rank = "S";
+            rowFormats.push({ color: "ffbd6932", bold: true });
+          } else if (item.rankType === "3") {
+            rank = "A";
+            rowFormats.push({ color: "ffa256e1", bold: true });
+          } else {
+            rank = "B";
+            rowFormats.push({ color: "ff8e8e8e", bold: false });
+          }
           rows.push([
             item.timestamp / 86400000 + 25569,
             item.name,
             item.itemType,
-            parseInt(item.rankType),
+            rank,
             index + 1,
             index - lastRank5,
             remark,
           ]);
-          if (item.rankType === "5") {
-            rowFormats.push({ color: "ffbd6932", bold: true });
+
+          if (item.rankType === "4") {
             lastRank5 = index;
-          } else if (item.rankType === "4") {
-            rowFormats.push({ color: "ffa256e1", bold: true });
-          } else {
-            rowFormats.push({ color: "ff8e8e8e", bold: false });
           }
         });
       }
@@ -293,13 +293,15 @@ class StarRailExtractor extends BaseExtractor {
     if (!uid) return null;
 
     const orderKey = [
-      "character5",
-      "lightcone5",
-      "character4",
-      "lightcone4",
-      "lightcone3",
+      "agent4",
+      "agent3",
+      "bangboo4",
+      "bangboo3",
+      "engine4",
+      "engine3",
+      "engine2",
     ];
-    const orderStat = ["star5", "star4", "star3"];
+    const orderStat = ["rank4", "rank3", "rank2"];
     const summary = [];
     const fetchTimestamps = [];
 
@@ -333,18 +335,18 @@ class StarRailExtractor extends BaseExtractor {
         let colorStat;
 
         switch (rankType) {
-          case "3":
+          case "2":
             colorCount = "#73c0de";
             colorStat = "#73c0de";
             break;
 
-          case "4":
-            colorCount = itemType === "character" ? "#5470c6" : "#91cc75";
+          case "3":
+            colorCount = itemType === "agent" ? "#5470c6" : "#91cc75";
             colorStat = "#a517bb";
             break;
 
-          case "5":
-            colorCount = itemType === "character" ? "#fac858" : "#ee6666";
+          case "4":
+            colorCount = itemType === "agent" ? "#fac858" : "#ee6666";
             colorStat = "#fac858";
 
             const pulls = end - lastRank5 + 1;
@@ -360,7 +362,7 @@ class StarRailExtractor extends BaseExtractor {
 
         end = index;
         keyCount = `${itemType}${rankType}`;
-        keyStat = `star${rankType}`;
+        keyStat = `rank${rankType}`;
 
         counts[keyCount] ??= {
           name: keyCount,
@@ -381,7 +383,7 @@ class StarRailExtractor extends BaseExtractor {
           .filter((key) => counts[key])
           .map((key) => {
             const count = counts[key];
-            if (key === "lightcone3" && history.length > 0) {
+            if (key === "engine2" && history.length > 0) {
               count.selected = false;
             }
             return count;
@@ -412,7 +414,7 @@ class StarRailExtractor extends BaseExtractor {
   }
 
   async getUrl() {
-    const text = i18n.games.starrail.log;
+    const text = i18n.games.zzz.log;
     const logType = this.#logType;
     let strategies;
 
@@ -440,8 +442,8 @@ class StarRailExtractor extends BaseExtractor {
   }
 
   async *fetchData(url = null) {
-    const text = i18n.games.starrail.log;
-    const gachaTypeNames = i18n.games.starrail.types;
+    const text = i18n.games.zzz.log;
+    const gachaTypeNames = i18n.games.zzz.types;
 
     const extractedUrl = new URL(url ?? (await this.getUrl()));
     const authkey = extractedUrl.searchParams.get("authkey");
@@ -451,7 +453,8 @@ class StarRailExtractor extends BaseExtractor {
     let uid = 0;
     const fetchFull = this.#fetchFullHistory;
     const fetchTimestamp = Date.now();
-    const finalUrl = new URL(getApi(extractedUrl));
+    const api = getApi(extractedUrl);
+    const finalUrl = new URL("common/gacha_record/api/getGachaLog", api);
     const searchParams = finalUrl.searchParams;
     const apiLang = API_LANGS[i18n.currentLocale] ?? API_LANGS["en-us"];
 
@@ -461,15 +464,11 @@ class StarRailExtractor extends BaseExtractor {
 
     for (const gachaType of GACHA_TYPES) {
       const gachaTypeName = gachaTypeNames[gachaType] ?? gachaType;
-      const pathname = ["21", "22"].includes(gachaType)
-        ? "common/gacha_record/api/getLdGachaLog"
-        : "common/gacha_record/api/getGachaLog";
       const items = [];
       let page = 1;
       let endId = null;
 
-      searchParams.set("gacha_type", gachaType);
-      finalUrl.pathname = pathname;
+      searchParams.set("real_gacha_type", gachaType);
 
       while (true) {
         const { region, timezone, list } = yield* this.#fetchPage(
@@ -619,7 +618,7 @@ class StarRailExtractor extends BaseExtractor {
   }
 
   async *#fetchPage(name, url, page, endId) {
-    const text = i18n.games.starrail.log;
+    const text = i18n.games.zzz.log;
 
     if (page % 10 === 0) {
       yield new SentinelMessage(parseText(text.fetch.interval, { name, page }));
@@ -662,6 +661,9 @@ class StarRailExtractor extends BaseExtractor {
 
       const data = result?.data;
       if (data) {
+        /**
+         *
+         */
         /**
          * data.list = [
          *  {
@@ -712,6 +714,6 @@ class StarRailExtractor extends BaseExtractor {
   }
 }
 
-const extractor = new StarRailExtractor();
+const extractor = new ZenlessZoneZeroExtractor();
 
 export default extractor;

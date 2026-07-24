@@ -23,10 +23,10 @@
                     "lackAuth": "Required authentication parameters not found in URL"
                 },
                 "fetch": {
-                    "fetchRetry": "Processing ${name} of page ${page} failed，retrying in 5 seconds for the ${count} time……",
-                    "fetchRetryFailed": "Processing ${name} of page ${page} failed，retry times maxed out",
-                    "fetchInterval": "Processing ${name} of page ${page}，1 second timeout every 10 pages……",
-                    "fetchCurrent": "Processing ${name} of page ${page}",
+                    "retry": "Processing ${name} of page ${page} failed，retrying in 5 seconds for the ${count} time……",
+                    "retryFailed": "Processing ${name} of page ${page} failed，retry times maxed out",
+                    "interval": "Processing ${name} of page ${page}，1 second timeout every 10 pages……",
+                    "current": "Processing ${name} of page ${page}",
                     "authTimeout": "User authentication expired, please reopen wish history inside the game client."
                 }
             },
@@ -135,6 +135,73 @@
                     "remark": "Remark"
                 },
                 "filePrefix": "Honkai: Star Rail warp logger"
+            }
+        },
+        "zzz": {
+            "title": "Zenless Zone Zero",
+            "types": {
+                "1": "Stable Channel",
+                "2": "Exclusive Channel",
+                "3": "W-Engine Channel",
+                "5": "Bangboo Channel",
+                "102": "Exclusive Rescreening",
+                "103": "W-Engine Reverberation"
+            },
+            "log": {
+                "file": {
+                    "notFound": "Unable to find game logs, please make sure you already opened wish history inside the game client"
+                },
+                "url": {
+                    "lackAuth": "Required authentication parameters not found in URL"
+                },
+                "fetch": {
+                    "retry": "Processing ${name} of page ${page} failed，retrying in 5 seconds for the ${count} time……",
+                    "retryFailed": "Processing ${name} of page ${page} failed，retry times maxed out",
+                    "interval": "Processing ${name} of page ${page}，1 second timeout every 10 pages……",
+                    "current": "Processing ${name} of page ${page}",
+                    "authTimeout": "User authentication expired, please reopen wish history inside the game client."
+                }
+            },
+            "ui": {
+                "setting": {
+                    "fetchFullHistory": "Get complete data",
+                    "fetchFullHistoryHint": "When this option is enabled, click the \"Update Data\" button to get all the card draw records within 6 months. When there are incorrect data within 6 months, this function can be used to repair.",
+                    "hideNovice": "Hide novice wishes",
+                    "logType": "Log type",
+                    "logTypeHint": "Choose which server generated logs to be used first when acquiring URL from game logs",
+                    "auto": "Auto",
+                    "cnServer": "CN server",
+                    "seaServer": "Global server"
+                },
+                "detail": {
+                    "without": "pulls without a S-Rank",
+                    "history": "S-Rank history",
+                    "average": "S-Rank on average"
+                },
+                "keys": {
+                    "rank4": "S-Rank",
+                    "rank3": "A-Rank",
+                    "rank2": "B-Rank",
+                    "agent4": "S-Rank Agents",
+                    "agent3": "A-Rank Agents",
+                    "bangboo4": "S-Rank Bangboo",
+                    "bangboo3": "A-Rank Bangboo",
+                    "engine4": "S-Rank W-Engines",
+                    "engine3": "A-Rank W-Engines",
+                    "engine2": "B-Rank W-Engines"
+                }
+            },
+            "excel": {
+                "header": {
+                    "time": "Time",
+                    "name": "Name",
+                    "type": "Type",
+                    "rank": "Rarity",
+                    "total": "Total",
+                    "pity": "Within pity",
+                    "remark": "Remark"
+                },
+                "filePrefix": "Zenless Zone Zero signal search logger"
             }
         },
         "wuwa": {

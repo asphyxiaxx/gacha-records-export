@@ -5,6 +5,7 @@ import config from "../config";
 
 import genshinExtr from "./genshin.js";
 import starrailExtr from "./starrail.js";
+import zzzExtr from "./zzz.js";
 import wuwaExtr from "./wuwa.js";
 
 const validateUIGF41 = new Ajv2020({ strict: false }).compile(UIGF41Schema);
@@ -13,11 +14,13 @@ class ExtractorsManager {
   #games = {
     [genshinExtr.id]: genshinExtr,
     [starrailExtr.id]: starrailExtr,
+    [zzzExtr.id]: zzzExtr,
     [wuwaExtr.id]: wuwaExtr,
   };
   #uigfs = {
     [genshinExtr.UIGFKey]: genshinExtr,
     [starrailExtr.UIGFKey]: starrailExtr,
+    [zzzExtr.UIGFKey]: zzzExtr,
   };
 
   get gameIds() {

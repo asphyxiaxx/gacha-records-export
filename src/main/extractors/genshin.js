@@ -156,7 +156,7 @@ async function readLocalLog(filepath) {
     return null;
   }
 
-  m = data.match(/\w:\/.+(GenshinImpact_Data|YuanShen_Data)/);
+  m = data.match(/\w:\\.*?\\(?:GenshinImpact_Data|YuanShen_Data)\\/gi);
   if (!m) {
     log.warn(`Unable to find the game path from file '${filepath}'`);
     return null;
