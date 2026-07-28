@@ -29,7 +29,7 @@ Modify or add the JSON file in the `src/i18n/` directory to translate into the a
 
 If you feel that the existing translation is inappropriate, you can send a pull request to modify it at any time.
 
-## Usage (Genshin Impact)
+## Usage
 
 1. Download the tool - [Github](https://github.com/asphyxiaxx/gacha-records-export/releases/latest)
 
@@ -46,19 +46,6 @@ If you feel that the existing translation is inappropriate, you can send a pull 
     ![preview](/docs/preview.png?v=1)
 
 If you need to export the data of multiple accounts, then switch to the new account in the game, open the wish history, and click the "load data" button in the tool.
-
-## Devlopment
-
-```
-# install node modules
-yarn install
-
-# develop
-yarn dev
-
-# Build a program that can run
-yarn build
-```
 
 ## License
 
