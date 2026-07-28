@@ -1,0 +1,344 @@
+{
+    "key": "en-us",
+    "title": "English",
+    "symbol": {
+        "colon": ": "
+    },
+    "games": {
+        "genshin": {
+            "title": "Genshin Impact",
+            "types": {
+                "200": "Permanent Wish",
+                "100": "Novice Wishes",
+                "301": "Character Event Wish",
+                "302": "Weapon Event Wish",
+                "400": "Character Event Wish-2",
+                "500": "Chronicled Wish and Lightrace Wish"
+            },
+            "log": {
+                "file": {
+                    "notFound": "Unable to find game logs, please make sure you already opened wish history inside the game client"
+                },
+                "url": {
+                    "lackAuth": "Required authentication parameters not found in URL"
+                },
+                "fetch": {
+                    "retry": "Processing ${name} of page ${page} failed，retrying in 5 seconds for the ${count} time……",
+                    "retryFailed": "Processing ${name} of page ${page} failed，retry times maxed out",
+                    "interval": "Processing ${name} of page ${page}，1 second timeout every 10 pages……",
+                    "current": "Processing ${name} of page ${page}",
+                    "authTimeout": "User authentication expired, please reopen wish history inside the game client."
+                }
+            },
+            "ui": {
+                "setting": {
+                    "fetchFullHistory": "Get complete data",
+                    "fetchFullHistoryHint": "When this option is enabled, click the \"Update Data\" button to get all the card draw records within 6 months. When there are incorrect data within 6 months, this function can be used to repair.",
+                    "hideNovice": "Hide novice wishes",
+                    "logType": "Log type",
+                    "logTypeHint": "Choose which server generated logs to be used first when acquiring URL from game logs",
+                    "auto": "Auto",
+                    "cnServer": "CN server",
+                    "seaServer": "Global server",
+                    "cloudServer": "Cloud server"
+                },
+                "detail": {
+                    "without": "pulls without a 5 star",
+                    "history": "5 star history",
+                    "average": "5 star on average"
+                },
+                "keys": {
+                    "star5": "5 star",
+                    "star4": "4 star",
+                    "star3": "3 star",
+                    "character5": "5 star character",
+                    "character4": "4 star character",
+                    "weapon5": "5 star weapon",
+                    "weapon4": "4 star weapon",
+                    "weapon3": "3 star weapon"
+                }
+            },
+            "excel": {
+                "header": {
+                    "time": "Time",
+                    "name": "Name",
+                    "type": "Type",
+                    "rank": "Rarity",
+                    "total": "Total",
+                    "pity": "Within pity",
+                    "remark": "Remark"
+                },
+                "wish2": "Wish 2",
+                "filePrefix": "Genshin wish logger"
+            }
+        },
+        "starrail": {
+            "title": "Honkai: Star Rail",
+            "types": {
+                "11": "Character Event Warp",
+                "12": "Light Cone Event Warp",
+                "1": "Regular Warp",
+                "2": "Starter Warp",
+                "21": "Character Collaboration Warp",
+                "22": "Light Cone Collaboration Warp"
+            },
+            "log": {
+                "file": {
+                    "notFound": "Unable to find game logs, please make sure you already opened wish history inside the game client"
+                },
+                "url": {
+                    "lackAuth": "Required authentication parameters not found in URL"
+                },
+                "fetch": {
+                    "retry": "Processing ${name} of page ${page} failed，retrying in 5 seconds for the ${count} time……",
+                    "retryFailed": "Processing ${name} of page ${page} failed，retry times maxed out",
+                    "interval": "Processing ${name} of page ${page}，1 second timeout every 10 pages……",
+                    "current": "Processing ${name} of page ${page}",
+                    "authTimeout": "User authentication expired, please reopen wish history inside the game client."
+                }
+            },
+            "ui": {
+                "setting": {
+                    "fetchFullHistory": "Get complete data",
+                    "fetchFullHistoryHint": "When this option is enabled, click the \"Update Data\" button to get all the card draw records within 6 months. When there are incorrect data within 6 months, this function can be used to repair.",
+                    "hideNovice": "Hide novice wishes",
+                    "logType": "Log type",
+                    "logTypeHint": "Choose which server generated logs to be used first when acquiring URL from game logs",
+                    "auto": "Auto",
+                    "cnServer": "CN server",
+                    "seaServer": "Global server"
+                },
+                "detail": {
+                    "without": "pulls without a 5 star",
+                    "history": "5 star history",
+                    "average": "5 star on average"
+                },
+                "keys": {
+                    "star5": "5 star",
+                    "star4": "4 star",
+                    "star3": "3 star",
+                    "character5": "5 star character",
+                    "character4": "4 star character",
+                    "lightcone5": "5 star light cone",
+                    "lightcone4": "4 star light cone",
+                    "lightcone3": "3 star light cone"
+                }
+            },
+            "excel": {
+                "header": {
+                    "time": "Time",
+                    "name": "Name",
+                    "type": "Type",
+                    "rank": "Rarity",
+                    "total": "Total",
+                    "pity": "Within pity",
+                    "remark": "Remark"
+                },
+                "filePrefix": "Honkai: Star Rail warp logger"
+            }
+        },
+        "zzz": {
+            "title": "Zenless Zone Zero",
+            "types": {
+                "1": "Stable Channel",
+                "2": "Exclusive Channel",
+                "3": "W-Engine Channel",
+                "5": "Bangboo Channel",
+                "102": "Exclusive Rescreening",
+                "103": "W-Engine Reverberation"
+            },
+            "log": {
+                "file": {
+                    "notFound": "Unable to find game logs, please make sure you already opened wish history inside the game client"
+                },
+                "url": {
+                    "lackAuth": "Required authentication parameters not found in URL"
+                },
+                "fetch": {
+                    "retry": "Processing ${name} of page ${page} failed，retrying in 5 seconds for the ${count} time……",
+                    "retryFailed": "Processing ${name} of page ${page} failed，retry times maxed out",
+                    "interval": "Processing ${name} of page ${page}，1 second timeout every 10 pages……",
+                    "current": "Processing ${name} of page ${page}",
+                    "authTimeout": "User authentication expired, please reopen wish history inside the game client."
+                }
+            },
+            "ui": {
+                "setting": {
+                    "fetchFullHistory": "Get complete data",
+                    "fetchFullHistoryHint": "When this option is enabled, click the \"Update Data\" button to get all the card draw records within 6 months. When there are incorrect data within 6 months, this function can be used to repair.",
+                    "hideNovice": "Hide novice wishes",
+                    "logType": "Log type",
+                    "logTypeHint": "Choose which server generated logs to be used first when acquiring URL from game logs",
+                    "auto": "Auto",
+                    "cnServer": "CN server",
+                    "seaServer": "Global server"
+                },
+                "detail": {
+                    "without": "pulls without a S-Rank",
+                    "history": "S-Rank history",
+                    "average": "S-Rank on average"
+                },
+                "keys": {
+                    "rank4": "S-Rank",
+                    "rank3": "A-Rank",
+                    "rank2": "B-Rank",
+                    "agent4": "S-Rank Agents",
+                    "agent3": "A-Rank Agents",
+                    "bangboo4": "S-Rank Bangboo",
+                    "bangboo3": "A-Rank Bangboo",
+                    "engine4": "S-Rank W-Engines",
+                    "engine3": "A-Rank W-Engines",
+                    "engine2": "B-Rank W-Engines"
+                }
+            },
+            "excel": {
+                "header": {
+                    "time": "Time",
+                    "name": "Name",
+                    "type": "Type",
+                    "rank": "Rarity",
+                    "total": "Total",
+                    "pity": "Within pity",
+                    "remark": "Remark"
+                },
+                "filePrefix": "Zenless Zone Zero signal search logger"
+            }
+        },
+        "wuwa": {
+            "title": "Wuthering Waves",
+            "types": {
+                "1": "Featured Resonator",
+                "2": "Featured Weapon",
+                "3": "Permanent Resonator",
+                "4": "Permanent Weapon",
+                "5": "Beginner Convene",
+                "6": "Beginner Selector",
+                "7": "Convene Giveback Event",
+                "8": "New Voyage Resonator Convene",
+                "9": "New Voyage Weapon Convene",
+                "12": "Reverb Resonator Convene",
+                "13": "Reverb Weapon Convene"
+            },
+            "log": {
+                "file": {
+                    "notFound": "Unable to find game logs, please make sure you already opened convene history inside the game client"
+                },
+                "url": {
+                    "lackAuth": "Required authentication parameters not found in URL",
+                    "notFound": "Unable to find the url in the game logs, please make sure you already opened convene history inside the game client"
+                },
+                "fetch": {
+                    "retry": "Processing ${name} failed，retrying in 5 seconds for the ${count} time...",
+                    "retryFailed": "Processing ${name} failed，retry times maxed out",
+                    "current": "Processing ${name}",
+                    "authTimeout": "User authentication expired, please reopen wish history inside the game client."
+                }
+            },
+            "ui": {
+                "setting": {
+                    "gamePath": "Game path",
+                    "browse": "Browse"
+                },
+                "detail": {
+                    "without": "pulls without a 5 star",
+                    "history": "5 star history",
+                    "average": "5 star on average"
+                },
+                "keys": {
+                    "star5": "5 star",
+                    "star4": "4 star",
+                    "star3": "3 star",
+                    "resonator5": "5 star resonator",
+                    "resonator4": "4 star resonator",
+                    "weapon5": "5 star weapon",
+                    "weapon4": "4 star weapon",
+                    "weapon3": "3 star weapon"
+                }
+            },
+            "excel": {
+                "header": {
+                    "time": "Time",
+                    "name": "Name",
+                    "type": "Type",
+                    "rank": "Rarity",
+                    "total": "Total",
+                    "pity": "Within pity",
+                    "remark": "Remark"
+                },
+                "filePrefix": "Wuthering Wave convene logger"
+            }
+        }
+    },
+    "ui": {
+        "button": {
+            "load": "Load data",
+            "update": "Update",
+            "excel": "Export Excel",
+            "url": "Input URL",
+            "setting": "Settings",
+            "option": "Option",
+            "solution": "Solution",
+            "cacheFolder": "Open cache folder",
+            "copyUrl": "Copy URL"
+        },
+        "select": {
+            "newAccount": "New account"
+        },
+        "hint": {
+            "newAccount": "Export data from other accounts",
+            "init": "Please open your wish history inside the game client before clicking on the 'Load data' button",
+            "lastUpdate": "Last update",
+            "failed": "Oops, something failed",
+            "updateAvailable": "The new update is available, click the button to go to the download page."
+        },
+        "win": {
+            "title": "Gacha Records History Exporter"
+        },
+        "detail": {
+            "sum": "Accumulated",
+            "total": "Total",
+            "times": "Pulls"
+        },
+        "setting": {
+            "title": "Settings",
+            "language": "Language",
+            "languageHint": "When the translation is missing, English will be displayed by default.",
+            "autoUpdate": "Auto update",
+            "DataLable": "Import / Export",
+            "DataImportButton": "Import data",
+            "DataExportButton": "Export data",
+            "DataImportSuccessed": "Data has been imported",
+            "DataExportSuccessed": "Data has been exported",
+            "UIGFNoAccounts": "No accounts found",
+            "UIGFHint": "This feature is used for importing/exporting data (the first export may take some time). Refer to this link for supported tools:",
+            "UIGFLink": "Uniformed Interchangeable GachaLog Format Standard"
+        },
+        "about": {
+            "title": "About",
+            "license": "This software is opensource using MIT license."
+        },
+        "urlDialog": {
+            "title": "Input URL manually",
+            "hint": "This function should only be used when you understand what URL is needed here",
+            "placeholder": "Please enter the URL with authentication information"
+        },
+        "deleteDialog": {
+            "title": "Confirm Deletion",
+            "hint1": "Are you sure you want to delete all gacha history for UID",
+            "hint2": "This cannot be undone."
+        },
+        "common": {
+            "urlCopied": "URL Copied",
+            "cancel": "Cancel",
+            "ok": "OK"
+        }
+    },
+    "log": {
+        "selectGamePath": "Select game installation path",
+        "autoUpdateSuccess": "Auto update successful，please restart the program"
+    },
+    "excel": {
+        "fileType": "Excel file",
+        "customFont": "Arial"
+    }
+}
