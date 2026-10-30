@@ -2,19 +2,12 @@ import * as crypto from "crypto";
 import { app } from "electron";
 import * as fs from "fs-extra";
 import { DatabaseSync } from "node:sqlite";
-import * as os from "os";
 import * as path from "path";
 import { pipeline } from "stream/promises";
 
 const userDataPath = !app.isPackaged
   ? path.resolve(__dirname, "..", "..", "userData")
   : path.resolve(app.getPath("userData"), "userData");
-
-const scryptKey = crypto.scryptSync(userDataPath, "hk4e", 24);
-
-function getLocale() {
-  return app.getLocale();
-}
 
 function assign(target, source, schema) {
   for (let [key, def] of Object.entries(schema)) {
@@ -61,11 +54,6 @@ function createDb(name) {
   return new DatabaseSync(filepath);
 }
 
-function existsFile(name) {
-  const filepath = path.join(userDataPath, name);
-  return fs.existsSync(filepath);
-}
-
 async function readdir(dirpath) {
   const filepath = path.join(userDataPath, dirpath);
   return fs.readdir(filepath);
@@ -99,49 +87,8 @@ async function saveJSON(name, data) {
   await fs.outputJSON(filepath, data, { spaces: 2 });
 }
 
-function hmac(data, type = "sha256") {
-  return crypto.crypto.createHmac(type, "hk4e").update(data).digest("hex");
-}
-
 function hash(data, type = "sha256") {
   return crypto.createHash(type).update(data).digest("hex");
-}
-
-function cipherAes(data) {
-  const algorithm = "aes-192-cbc";
-  const iv = Buffer.alloc(16, 0);
-  const cipher = crypto.createCipheriv(algorithm, scryptKey, iv);
-
-  let encrypted = cipher.update(data, "utf8", "hex");
-  encrypted += cipher.final("hex");
-  return encrypted;
-}
-
-function decipherAes(encrypted) {
-  const algorithm = "aes-192-cbc";
-  const iv = Buffer.alloc(16, 0);
-  const decipher = crypto.createDecipheriv(algorithm, scryptKey, iv);
-
-  let decrypted = decipher.update(encrypted, "hex", "utf8");
-  decrypted += decipher.final("utf8");
-  return decrypted;
-}
-
-function localIP() {
-  const interfaces = os.networkInterfaces();
-
-  for (const key in interfaces) {
-    for (const alias of interfaces[key]) {
-      if (
-        !alias.internal &&
-        alias.family === "IPv4" &&
-        alias.address !== "127.0.0.1"
-      ) {
-        return alias.address;
-      }
-    }
-  }
-  return "127.0.0.1";
 }
 
 async function download(url, filePath) {
@@ -177,17 +124,11 @@ function parseText(text, data) {
 
 export {
   assign,
-  cipherAes,
   convertUTC,
   createDb,
-  decipherAes,
   download,
-  existsFile,
   formatTimestamp,
-  getLocale,
   hash,
-  hmac,
-  localIP,
   maskAuthkey,
   parseText,
   readdir,
