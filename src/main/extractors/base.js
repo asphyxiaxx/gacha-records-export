@@ -170,8 +170,7 @@ class BaseExtractor {
       if (items && items.length > 0) {
         const columns = Object.keys(items[0]);
         const insertStmt = db.prepare(
-          `INSERT INTO ${this.tableName} (${columns.join(", ")})
-         VALUES (${columns.map((k) => `:${k}`).join(", ")})`,
+          `INSERT INTO ${this.tableName} (${columns.join(", ")}) VALUES (${columns.map((k) => `:${k}`).join(", ")})`,
         );
 
         for (const item of items) {
