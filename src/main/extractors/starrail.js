@@ -5,7 +5,8 @@ import { glob } from "glob";
 import * as path from "path";
 import { URL } from "url";
 import i18n from "../i18n.js";
-import { formatTimestamp, parseText, sleep, convertUTC } from "../utils.js";
+import { getUIGFDict } from "../uigf.js";
+import { convertUTC, formatTimestamp, parseText, sleep } from "../utils.js";
 import BaseExtractor from "./base.js";
 import { SentinelMessage } from "./message.js";
 
@@ -718,7 +719,7 @@ class StarRailExtractor extends BaseExtractor {
 
     if (!itemsMap.has(lang)) {
       const dictLang = UIGF_DICT_LANGS[lang] ?? UIGF_DICT_LANGS["en-us"];
-      const itemIds = await this._readUIGFDict(this.id, dictLang);
+      const itemIds = await getUIGFDict(this.id, dictLang);
       const itemNames = Object.fromEntries(
         Object.entries(itemIds).map(([k, v]) => [v, k]),
       );
