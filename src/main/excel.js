@@ -3,21 +3,7 @@ import { Workbook } from "exceljs";
 import * as fs from "fs-extra";
 import * as path from "path";
 import i18n from "./i18n.js";
-
-function pad(num) {
-  return `${num}`.padStart(2, "0");
-}
-
-function getTimeString() {
-  const d = new Date();
-  const YYYY = d.getFullYear();
-  const MM = pad(d.getMonth() + 1);
-  const DD = pad(d.getDate());
-  const HH = pad(d.getHours());
-  const mm = pad(d.getMinutes());
-  const ss = pad(d.getSeconds());
-  return `${YYYY}${MM}${DD}_${HH}${mm}${ss}`;
-}
+import { getTimeString } from "./utils.js";
 
 function applyHeaderStyle(sheet) {
   sheet.columns.forEach((column, index) => {

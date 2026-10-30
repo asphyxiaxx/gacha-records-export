@@ -122,12 +122,28 @@ function parseText(text, data) {
   });
 }
 
+function pad(num) {
+  return `${num}`.padStart(2, "0");
+}
+
+function getTimeString() {
+  const d = new Date();
+  const YYYY = d.getFullYear();
+  const MM = pad(d.getMonth() + 1);
+  const DD = pad(d.getDate());
+  const HH = pad(d.getHours());
+  const mm = pad(d.getMinutes());
+  const ss = pad(d.getSeconds());
+  return `${YYYY}${MM}${DD}_${HH}${mm}${ss}`;
+}
+
 export {
   assign,
   convertUTC,
   createDb,
   download,
   formatTimestamp,
+  getTimeString,
   hash,
   maskAuthkey,
   parseText,
