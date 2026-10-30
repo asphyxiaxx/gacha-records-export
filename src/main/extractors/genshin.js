@@ -571,8 +571,8 @@ class GenshinExtractor extends BaseExtractor {
     if (!payload) return;
 
     const fetchTimestamp = Date.now();
-    const lang = i18n.currentLocale;
-    const { itemNames } = await this.#UIGFLookup(lang);
+    const currentLang = i18n.currentLocale;
+    const { itemNames } = await this.#UIGFLookup(currentLang);
 
     for (const data of payload) {
       const uid = data.uid;
@@ -580,8 +580,15 @@ class GenshinExtractor extends BaseExtractor {
 
       const groupedItems = data.list.reduce((acc, item) => {
         const gachaType = item.uigf_gacha_type;
-        const itemName = itemNames[item.item_id] ?? item.name;
         const time = new Date(item.time.replace(" ", "T") + "Z").getTime();
+
+        let lang = currentLang;
+        let itemName = itemNames[item.item_id];
+
+        if (itemName === undefined) {
+          lang = data.lang;
+          itemName = item.name;
+        }
 
         acc[gachaType] ??= [];
         acc[gachaType].push({
