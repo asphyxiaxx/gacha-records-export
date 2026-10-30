@@ -12,7 +12,7 @@ import windowStateKeeper from "electron-window-state";
 import * as fs from "fs-extra";
 import { debounce } from "lodash-es";
 import * as path from "path";
-import config from "./config";
+import config from "./config.js";
 import * as excel from "./excel.js";
 import extractors from "./extractors";
 import i18n from "./i18n.js";
