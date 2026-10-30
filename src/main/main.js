@@ -17,7 +17,7 @@ import * as excel from "./excel.js";
 import extractors from "./extractors";
 import i18n from "./i18n.js";
 import * as update from "./update.js";
-import { maskAuthkey, userDataPath } from "./utils.js";
+import { getTimeString, maskAuthkey, userDataPath } from "./utils.js";
 
 let win = null;
 
@@ -174,7 +174,10 @@ if (app.requestSingleInstanceLock()) {
   ipcMain.handle("EXPORT_DATA", async (event, type, data) => {
     try {
       const filePath = dialog.showSaveDialogSync({
-        defaultPath: path.join(app.getPath("downloads")),
+        defaultPath: path.join(
+          app.getPath("downloads"),
+          `${type}_${getTimeString()}`,
+        ),
         filters: [{ name: "JSON", extensions: ["json"] }],
       });
       if (filePath) {
