@@ -65,7 +65,7 @@
     "@vitejs/plugin-vue": "^6.0.7",
     "ajv": "^8.20.0",
     "echarts": "^6.1.0",
-    "electron": "^43.0.0",
+    "electron": "^45.1.0",
     "electron-builder": "^26.15.3",
     "electron-log": "^5.4.4",
     "electron-unhandled": "^3.0.2",
