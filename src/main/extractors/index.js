@@ -5,8 +5,8 @@ import config from "../config";
 
 import genshinExtr from "./genshin.js";
 import starrailExtr from "./starrail.js";
-import zzzExtr from "./zzz.js";
 import wuwaExtr from "./wuwa.js";
+import zzzExtr from "./zzz.js";
 
 function mapToJSONType(type) {
   switch (type.toUpperCase()) {
